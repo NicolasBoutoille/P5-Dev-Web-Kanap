@@ -1,11 +1,11 @@
-// Création d'un objet product pour l'afficher ensuite sur la page d'accueil//
+// Création d'un objet product pour l'afficher ensuite sur la page d'accueil
 class Product{
     constructor(jsonProduct){
         jsonProduct && Object.assign(this, jsonProduct);
     }
 };
 
-// Récupération et affichage des produits via l'API //
+// Récupération et affichage des produits via l'API
 fetch("http://localhost:3000/api/products")
     .then(data => data.json())
     .then(jsonListProducts => {
