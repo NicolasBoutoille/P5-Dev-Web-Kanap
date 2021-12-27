@@ -18,18 +18,17 @@ class ProductDetail{
 
 // Récupération via l'API et affichage du produit detaillé 
 fetch("http://localhost:3000/api/products/" + productId)
-  .then(function(res) {
-    if (res.ok) {
-      return res.json();
-    }
-  })
+  .then(data => data.json())
   .then(function(ProductDetail) {
     document.querySelector(".item__img").innerHTML += `<img src="${ProductDetail.imageUrl}" alt="${ProductDetail.altTxt}">`;
     document.getElementById("title").textContent = `${ProductDetail.name}`;
     document.getElementById("price").textContent = `${ProductDetail.price}`;
     document.getElementById("description").textContent = `${ProductDetail.description}`;
-    document.getElementById("colors").insertAdjacentHTML("beforeend", ProductDetail.colors.map(color => `<option id= "valueColor" value="${color}">${color}</option>`));                                                                           
-  })
+    let productColors = ProductDetail.colors;
+    productColors.forEach(element => {
+      document.getElementById("colors").innerHTML += `<option value="${element}">${element}</option>`
+    });
+  });
 
   
   // Ecoute du bouton "addToCart" lors du click
@@ -67,10 +66,12 @@ fetch("http://localhost:3000/api/products/" + productId)
           product.quantity = JSON.parse(productQuantity);
           basket.push(product);
         }  
-      // sinon on l'ajoute au panier   
+      // Sinon on l'ajoute au panier si la quantité est supérieure à 0   
       }else{
-            product.quantity = JSON.parse(productQuantity);
+        if(productQuantity >0){
+          product.quantity = JSON.parse(productQuantity);
             basket.push(product);
+        }     
       }
       saveBasket(basket);
     }
